@@ -36,6 +36,9 @@ n次元の総空間の中に直交するmこの初期ベクトルの組を用意
 Lorenz方程式を解きLyapunov spectrumの値を確認しました。   
 
 
+<img src="https://github.com/llbxg/lyapunov/blob/master/img/12.png?raw=true" width="300px"><img src="https://github.com/llbxg/lyapunov/blob/master/img/3.png?raw=true"  width="300px">
+
+
 ## code
 方程式を定義して、それを計算していきます。
 サンプルとしてLorenzを載せておきます。   
