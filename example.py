@@ -1,7 +1,6 @@
 from lib.handle import Handle
 
 from lorenz import Lorenz
-from test import Test
 
 l = Lorenz(params=(40, 16, 4), size=3)
 h = Handle(l)

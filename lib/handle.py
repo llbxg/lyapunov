@@ -7,10 +7,12 @@ import numpy as np
 from .tools import rk4
 
 class Handle(object):
-    def __init__(self, O, dt=0.01, delta=10**(-3), N_ini=10000, N_lam=10000, num_ave = 100):
+    def __init__(self, O, dt=0.01, delta=10**(-3), N_ini=10000, N_lam=10000, num_ave = 100, cal_next=True):
         self.o = O
         self.dt, self.size, self.delta = dt, self.o.size, delta
         self.N_ini, self.N_lam, self.num_ave = N_ini, N_lam, num_ave
+
+        self.cal_next= partial(rk4, self.o, h=self.dt) if cal_next else self.o
 
         self._initial()
 
@@ -19,7 +21,7 @@ class Handle(object):
     def _initial(self):
         u = np.array([np.random.rand() for _ in range(self.size)])
         for _ in range(self.N_ini):
-            u = rk4(self.o, u, h=self.dt)
+            u = self.cal_next(u)
         self.u = u
 
     def lyapunov_exponent_1(self):
@@ -54,10 +56,10 @@ class Handle(object):
         u_hat = [u_tilde + w for w in w_0]
 
         for _ in range(self.N_lam):
-            u_tilde = rk4(self.o, u_tilde, h=self.dt)
+            u_tilde = self.cal_next(u_tilde)
 
             for i in range(self.size):
-                u_hat[i] = rk4(self.o, u_hat[i], h=self.dt)
+                u_hat[i] = self.cal_next(u_hat[i])
                 w_tau[i] = u_hat[i] - u_tilde
                 support_gs = 0
                 for j in range(0,i,1):
